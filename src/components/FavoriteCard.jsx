@@ -7,7 +7,7 @@ import { FaTrash } from "react-icons/fa";
 import { toast } from 'react-toastify'
 import useStorage from '../hooks/useStorage'
 
-const FavoriteCard = ({ item, onRemove }) => {
+const FavoriteCard = ({  item, onRemove, onShowDetails  }) => {
   const type = useContext(TypeContext);
   const { getItem, setItem } = useStorage();
   
@@ -69,6 +69,12 @@ const FavoriteCard = ({ item, onRemove }) => {
  let isDate = true
   if (date === "" || date === undefined ||date === null) isDate = false
 
+  const handleDetailsClick = () => {
+    if (onShowDetails) {
+      onShowDetails(item.id, item.type || type);
+    }
+  }
+
 
   return (    
     <div className="item-card">  
@@ -83,7 +89,7 @@ const FavoriteCard = ({ item, onRemove }) => {
           <p className='date-time'>Date not available</p>
         )}
         <div className='button-group'>
-          <button type="button" className="btn btn-primary btn-details" title='Show detail info'>Details</button>
+          <button type="button"  onClick={handleDetailsClick} className="btn btn-primary btn-details" title='Show detail info'>Details</button>
           <button 
             type="button" 
             onClick={removeFromFavorites} 

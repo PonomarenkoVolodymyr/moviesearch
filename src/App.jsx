@@ -75,7 +75,7 @@ function App() {
   }
 
   return (    
-    <Router basename="/moviesearch">
+    <Router /*basename="/moviesearch"*/>
       <TypeContext value={type}>
     {inProgress && <Loader/>}
     <Routes>

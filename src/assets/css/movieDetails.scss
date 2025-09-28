@@ -1,0 +1,36 @@
+.modal-content-wrap {
+    .main-info {
+        .img-section {
+            img {
+                max-height: 400px;
+                object-fit: cover;
+            }
+        }
+
+        .details-list {
+            p {
+                margin-bottom: 0.5rem;
+
+                strong {
+                    color: #495057;
+                }
+
+                span {
+                    color: #6c757d;
+                }
+            }
+        }
+    }
+
+    .summary,
+    .production {
+        border-top: 1px solid #dee2e6;
+        padding-top: 1rem;
+
+        h5,
+        h6 {
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+    }
+}

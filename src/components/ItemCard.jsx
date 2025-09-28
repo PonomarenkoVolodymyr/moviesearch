@@ -1,3 +1,5 @@
+// 
+
 import { useContext, useEffect, useState } from 'react'
 import noImage from '../assets/img/no-img.png'
 import '../assets/css/cardItem.scss'
@@ -6,7 +8,7 @@ import { TypeContext } from '../App'
 import { FaHeart } from "react-icons/fa";
 import { toast } from 'react-toastify'
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ item, onShowDetails }) => {
   const type = useContext(TypeContext);
   const [isFavorite, setIsFavorite] = useState(false);
   const IMG_PATH = 'https://image.tmdb.org/t/p/w500'
@@ -31,7 +33,6 @@ const ItemCard = ({ item }) => {
       break
   }
 
-  
   useEffect(() => {
     checkIfFavorite();
   }, [item.id]);
@@ -71,8 +72,14 @@ const ItemCard = ({ item }) => {
     return isFavorite ? 'Remove from favorite' : 'Add to favorite';
   }
 
+  const handleDetailsClick = () => {
+    if (onShowDetails) {
+      onShowDetails(item.id, type);
+    }
+  }
+
   let isDate = true
-  if (date === "" || date === undefined ||date === null) {isDate = false}
+  if (date === "" || date === undefined || date === null) {isDate = false}
 
   return (    
     <div className="item-card">  
@@ -83,7 +90,14 @@ const ItemCard = ({ item }) => {
         <h5 className="card-title">{title}</h5>
         {isDate ? <time className='date-time' dateTime={date}>{formatDate(date)}</time> : <p className='date-time'>Date not available</p> }
         <div className='button-group'>
-          <button type="button" className="btn btn-primary btn-details" title='Show detail info'>Details</button>
+          <button 
+            type="button" 
+            className="btn btn-primary btn-details" 
+            title='Show detail info'
+            onClick={handleDetailsClick}
+          >
+            Details
+          </button>
           <button 
             type="button" 
             onClick={toggleFavorite} 

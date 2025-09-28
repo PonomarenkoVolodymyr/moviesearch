@@ -1,0 +1,23 @@
+@use './colors.scss' as *;
+
+.filter-nav {
+    display: flex;
+    justify-content: flex-start;
+    // gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 20px;
+
+    li {
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &.active {
+            border: 1px solid $black_color;
+            background: $black_color;
+            color: $white_color;
+        }
+    }
+}
