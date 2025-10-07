@@ -13,35 +13,45 @@ import Favorites from './components/Favorites'
 import useStorage from './hooks/useStorage'
 import { createContext } from 'react'
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const TypeContext = createContext()
-
-
 
 function App() { 
   const [moviesList, setMoviesList] = useState([])
-  const [page, setPages] = useState(1)
+  const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
   const [totalItems, setTotalItems] = useState(0)
   const [inProgress, setInProgress] = useState(false)
-  const {getItem, setItem} = useStorage()
+  const { getItem, setItem } = useStorage()
   const [type, setType] = useState('')
-  
+  const [lastSearch, setLastSearch] = useState(null)
 
-  const handleSearch = async (params) => {    
+  
+  const fetchMovies = async (params, currentPage = 1) => {    
     setInProgress(true)
     setType(params.type)
-    const storeKey = params.search.replaceAll(" ","_")+"_"+params.type+"_"+params.year
-    const cahsedList = getItem(storeKey)
+    setPage(currentPage)
+    setLastSearch(params)
 
-    if (cahsedList){
-      setMoviesList(cahsedList.results)
-      setTotalPages(cahsedList.total_pages)
-      setTotalItems(cahsedList.total_results)
+    const storeKey = `${params.search.replaceAll(" ","_")}_${params.type}_${params.year}_${currentPage}`
+    const cachedList = getItem(storeKey)
+
+    if (cachedList) {
+      setMoviesList(cachedList.results)
+      setTotalPages(cachedList.total_pages)
+      setTotalItems(cachedList.total_results)
       setInProgress(false)
       return
     }
 
-    const url = `https://api.themoviedb.org/3/search/${params.type}?include_adult=false&language=en-US&page=1&query=${params.search}&year=${params.year}`;
+    let url = `https://api.themoviedb.org/3/search/${params.type}?include_adult=false&language=en-US&page=${currentPage}&query=${params.search}`;
+
+    if (params.year && params.type === 'movie') {
+      url += `&year=${params.year}`;
+    } else if (params.year && params.type === 'tv') {
+      url += `&first_air_date_year=${params.year}`;
+    }
+
     const options = {
       method: 'GET',
       headers: {
@@ -52,62 +62,73 @@ function App() {
     
     try {
       const response = await fetch(url, options)
-      if(response.ok){
+      if (response.ok) {
         const data = await response.json()
         setItem(storeKey, data)
         setMoviesList(data.results || [])
+        setPage(data.page)
         setTotalPages(data.total_pages)
         setTotalItems(data.total_results)
-
       } else {
         toast.error(response.status || "Error fetching data")
-        return
       }        
       
     } catch (error) {
       toast.error("Failed to fetch data")
       console.error('Error:', error)
-    } finally{
-       await delay(1000)
+    } finally {
+      await delay(500)
       setInProgress(false)
     }
-   
+  }
+
+
+  const handleSearch = async (params) => {
+    await fetchMovies(params, 1)
+  }
+  
+  const handlePageChange = (newPage) => {
+    if (lastSearch) {
+      fetchMovies(lastSearch, newPage)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }
 
   return (    
-    <Router /*basename="/moviesearch"*/>
+    <Router>
       <TypeContext value={type}>
-    {inProgress && <Loader/>}
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route 
-          index 
-          element={
-            <>
-              <div className="mb-3">
-                <Search onSearch={handleSearch} />
-              </div>
-              <Movies movies={moviesList} totalItems={totalItems}/>
-            </>
-          } 
-        />
-        <Route path="about" element={<AboutUs />} />
-        <Route path="favorites" element={<Favorites />} />
-      </Route>
-    </Routes>
-    
+        {inProgress && <Loader/>}
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route 
+              index 
+              element={
+                <>
+                  <div className="mb-3">
+                    <Search onSearch={handleSearch} />
+                  </div>
+                  <Movies 
+                    movies={moviesList} 
+                    totalItems={totalItems}
+                    totalPages={totalPages}
+                    currentPage={page}
+                    onPageChange={handlePageChange}
+                  />
+                </>
+              } 
+            />
+            <Route path="about" element={<AboutUs />} />
+            <Route path="favorites" element={<Favorites />} />
+          </Route>
+        </Routes>
 
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      closeOnClick={false}
-      pauseOnHover={true}
-      draggable={true}
-      theme="colored"
-    />   
-    </TypeContext> 
-  </Router>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          theme="colored"
+        />   
+      </TypeContext> 
+    </Router>
   )
 }
 

@@ -3,15 +3,26 @@
 .filter-nav {
     display: flex;
     justify-content: flex-start;
-    // gap: 10px;
     list-style: none;
     padding: 0;
     margin: 20px;
+    gap: 10px;
 
     li {
+        vertical-align: middle;
+        margin-right: 15px;
+        padding: 5px 15px;
+        border-radius: 40px;
+        border: 1px solid $text_color;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
 
         &:hover {
+            border: 1px solid $accent_color;
+            background: $accent_color;
             cursor: pointer;
+            color: $white_color;
         }
 
         &.active {
@@ -19,5 +30,20 @@
             background: $black_color;
             color: $white_color;
         }
+
+
+        &:focus {
+            outline: 2px solid $accent_color;
+            outline-offset: 2px;
+        }
+    }
+}
+
+@media (max-width: 470px) {
+    .filter-nav {
+        flex-direction: column;
+        margin-bottom: 5px;
+        text-align: center;
+
     }
 }

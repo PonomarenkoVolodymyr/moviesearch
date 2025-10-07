@@ -5,3 +5,19 @@ $accent_color: #9FCBD7;
 $accent_secondary_color: #4A747F;
 $orange_color: #FC5B3A;
 $grey_color: #E8EAEE;
+$pagination-bg-color: #1f1f1f;
+$pagination-bg-color-secondary: #343434;
+$pagination-accent-color: #0d6efd;
+
+:root {
+    --text-color: #{$text_color};
+    --white-color: #{$white_color};
+    --black-color: #{$black_color};
+    --accent-color: #{$accent_color};
+    --accent-secondary-color: #{$accent_secondary_color};
+    --orange-color: #{$orange_color};
+    --grey-color: #{$grey_color};
+    --pagination-bg-color: #{$pagination-bg-color};
+    --pagination-bg-color-secondary: #{$pagination-bg-color-secondary};
+    --pagination-accent-color: #{$pagination-accent-color};
+}

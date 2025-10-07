@@ -1,18 +1,19 @@
 @use './colors.scss' as *;
+@use '../../index.css' as *;
 
-.search-form,
-.search-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-}
+// .search-form,
+// .search-group {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     margin: 0;
+//     padding: 0;
+// }
 
-.search-group {
-    margin-right: 20px;
-    gap: 30px;
-}
+// .search-group {
+//     margin-right: 20px;
+//     gap: 30px;
+// }
 
 .custom-card {
     backdrop-filter: blur(5px);
@@ -46,4 +47,72 @@
     background-size: 350px 220px;
     background-position: calc(100% - 15px) calc(100% - 15px);
 
+}
+
+.pagination-dark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .page-item {
+        border: none !important;
+        background: none !important;
+
+        &:hover {
+            border: none !important;
+            background: none !important;
+        }
+
+        &.active .page-link {
+            background-color: $pagination-accent-color !important;
+            color: $white_color !important;
+            border: none !important;
+        }
+
+        &.disabled .page-link {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+    }
+
+    .page-link {
+        color: $white_color !important;
+        background-color: $pagination-bg-color !important;
+        border: none !important;
+        border-radius: 6px;
+        margin: 0;
+        padding: 6px 12px;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        outline: none !important;
+        box-shadow: none !important;
+        text-decoration: none;
+
+        &:hover {
+            background-color: $pagination-bg-color-secondary !important;
+            color: $white_color !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        &:focus,
+        &:active,
+        &:focus-visible {
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+            background-color: #2a2a2a !important;
+        }
+    }
+}
+
+.btn-nowrap-txt {
+    white-space: nowrap;
+    min-width: 90px;
+}
+
+@media (min-width: 768px) {
+    .col-md-6 {
+        flex: 0 0 auto;
+        width: 45%;
+    }
 }

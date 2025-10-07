@@ -1,4 +1,5 @@
 @use './colors.scss' as *;
+@use '../../index.css' as *;
 
 .header {
     padding: 15px 0;
@@ -36,12 +37,9 @@
 
 li {
     vertical-align: middle;
-
     margin-right: 30px;
-    padding: 5px 15px 7px;
     border-radius: 40px;
     border: 1px solid $text_color;
-
 
     &:hover {
         border: $black_color;
@@ -49,23 +47,66 @@ li {
         border: 1px solid $accent_color;
         cursor: pointer;
 
-        a {
+        .nav-link {
+            width: 100%;
+            height: 100%;
             color: $white_color;
         }
     }
 
-    &:has(a.active) {
+    &:has(.nav-link.active) {
         border: 1px solid $black_color;
         background: $black_color;
 
-        a {
+        .nav-link {
             color: $white_color;
         }
     }
+}
 
-    a {
-        text-decoration: none;
-        font-size: 1rem;
-        color: $text_color;
+.nav-link {
+    display: block;
+    padding: 5px 15px 7px;
+    text-decoration: none;
+    font-size: 1rem;
+    color: $text_color;
+
+
+    &.active {
+        color: inherit;
+    }
+}
+
+@media (max-width: 992px) {
+    .header {
+
+        align-items: stretch;
+        gap: 20px;
+
+        .left-part {
+            flex-direction: column;
+            align-items: flex-start;
+
+            gap: 10px;
+        }
+
+        .logo-group {
+            justify-content: flex-start;
+
+        }
+    }
+
+
+}
+
+@media (max-width: 565px) {
+
+    .header {
+        gap: 0;
+    }
+
+    .nav li {
+        margin-right: 10px;
+        margin-bottom: 5px;
     }
 }
